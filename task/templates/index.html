@@ -1,0 +1,61 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+<div role='form' class='todoForm'>
+    <div class="col-md-10">
+        <form method="POST" class="form-horizontal" id="formulario">
+            {% csrf_token %}
+            
+            <label for="description" class="control-label col-md-1">Descrição:</label>
+            <div class="col-md-10">
+                <input name='description' id='description' class='form-control' placeholder='Adicione uma tarefa' value="{{ field.value }}" />
+            </div>
+            
+            <button class='btn btn-primary' type="button" onclick="task_new()">Salvar</button>
+        </form>
+    </div>
+    <div >
+        <button class='btn btn-info' onclick="search()">
+            <i class='fa fa-search'></i>
+        </button>
+        <button class='btn btn-default' onclick="clear()">
+            <i class='fa fa-close'></i>
+        </button>
+    </div>
+</div>
+<div class="col-md-12">
+    <table class='table'>
+        <thead>
+            <tr>
+                <td class="bg-primary">Descrição</td>
+                <td class='tableActions bg-primary'>Ações</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{task.description}}</td>
+                <td>
+                    {% if not task.done %}
+                    <button class='btn btn-success'  onclick="task_done('{{ task.id }}')">
+                        <i class='fa fa-check'></i>
+                    </button>
+                    <a class='btn btn-primary' href="{% url 'task_update' task.id %}">
+                        <i class='fa fa-pencil'></i>
+                    </a>
+                    {% endif %} {% if task.done %}
+                    <button class='btn btn-warning' onclick="task_undo('{{ task.id }}')">
+                        <i class='fa fa-undo'></i>
+                    </button>
+                    <button class='btn btn-danger' onclick="task_delete('{{ task.id }}')">
+                        <i class='fa fa-trash-o'></i>
+                    </button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

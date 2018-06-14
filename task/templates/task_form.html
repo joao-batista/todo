@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                <label for="description">Descrição:</label>
+                <input name='description' id='description' class='form-control' placeholder='Adicione uma tarefa' value="{{ field.value }}"></input>
+            </div>
+        {% endfor %}
+        <button class='btn btn-primary' type="submit">Salvar</button>
+    </form>
+{% endblock %}
